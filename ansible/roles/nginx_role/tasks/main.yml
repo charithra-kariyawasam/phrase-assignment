@@ -1,0 +1,43 @@
+- name: "apt-get update"
+  apt:
+    update_cache: yes
+
+- name: "install nginx"
+  apt:
+    name: ['nginx']
+    state: latest
+
+- name: copy nginx site.conf
+  template:
+    src: site.conf.j2
+    dest: /etc/nginx/conf.d/minikube-proxy.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+
+- name: create the ssl directroy  
+  file:
+    path: /etc/nginx/ssl 
+    state: directory
+    mode: '0755'  
+
+- name: copy ssl cert to the ssl dir
+  template:
+    src: nginx.crt.j2
+    dest: /etc/nginx/ssl/nginx.crt
+    owner: root
+    group: root
+    mode: '0644'
+
+
+- name: copy ssl key to the ssl dir
+  template:
+    src: nginx.key.j2
+    dest: /etc/nginx/ssl/nginx.key
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: restart nginx 
+  command: service nginx restart

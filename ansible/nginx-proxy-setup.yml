@@ -1,0 +1,11 @@
+---
+- name: NGINX_playbook | Phrase
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  become_method: sudo
+  vars_files:
+    - vars/nginx_vars.yml
+  roles:
+    - { role: nginx_role }

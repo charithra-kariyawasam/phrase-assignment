@@ -1,0 +1,13 @@
+##### Updating the apt cahce #####
+- name: Updating the apt cache
+  apt:
+    update_cache: yes
+
+#####Insatlling the curl and jq packages#####
+- name: Installing curl and jq
+  apt:
+    name:
+      - jq
+      - curl
+      - apache2-utils
+    state: present

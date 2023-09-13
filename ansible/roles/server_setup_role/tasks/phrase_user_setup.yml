@@ -1,0 +1,22 @@
+#####Create the pharase admin user if doesn't exist####
+- name: Ensure phrase_user exists
+  user:
+    name: phrase_user
+    createhome: yes
+    shell: /bin/bash
+
+
+#####Add the phrase public key to the user#####
+- name: Add public key to phrase_admin's authorized_keys
+  authorized_key:
+    user: phrase_user
+    key: "{{ lookup('file', '../files/phrase_user.pub') }}"
+    state: present
+
+
+#####Restrting the sshd service to apply the changes#####
+- name: Restart SSH service
+  service:
+    name: ssh
+    state: restarted
+  become: yes

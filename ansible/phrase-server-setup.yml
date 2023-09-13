@@ -1,0 +1,11 @@
+---
+- name: server_setup_playbook | Phrase
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  become_method: sudo
+  vars_files:
+    - vars/server_setup_vars.yml
+  roles:
+    - { role: server_setup_role }

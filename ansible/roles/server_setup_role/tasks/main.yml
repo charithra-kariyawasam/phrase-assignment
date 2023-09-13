@@ -1,0 +1,8 @@
+- name: Setup the phrase admin user
+  include_tasks: phrase_admin_user_setup.yml
+
+- name: Setup the phrase user
+  include_tasks: phrase_user_setup.yml
+
+- name: Installing the required packages
+  include_tasks: package_installation.yml

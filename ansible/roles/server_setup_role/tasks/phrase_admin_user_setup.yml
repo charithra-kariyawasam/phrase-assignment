@@ -1,0 +1,30 @@
+#####Create the pharase admin user if doesn't exist####
+- name: Ensure phrase_admin user exists
+  user:
+    name: phrase_admin
+    createhome: yes
+    shell: /bin/bash
+
+
+#####Add the phrase public key to the user#####
+- name: Add public key to phrase_admin's authorized_keys
+  authorized_key:
+    user: phrase_admin
+    key: "{{ lookup('file', '../files/phrase_admin.pub') }}"
+    state: present
+
+
+#####Updating the sudoers file to setup the sudo rules for the new user#####
+- name: Allow phrase_admin to sudo without password
+  lineinfile:
+    dest: /etc/sudoers
+    insertbefore: '^%sudo'
+    line: 'phrase_admin ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+#####Restrting the sshd service to apply the changes#####
+- name: Restart SSH service
+  service:
+    name: ssh
+    state: restarted
+  become: yes
